@@ -1,67 +1,50 @@
-import { Button, Container, Stack, Text } from '@chakra-ui/react';
+import { Container, Stack } from '@chakra-ui/react';
 
 import { Outlet } from 'react-router-dom';
+import { Header } from '../components/Header';
 
 export const MainLayout = () => {
   return (
     <Container
+      data-test-id="Main Container"
       minHeight="100vh"
       minWidth="100%"
       backgroundColor="#fff"
       justifyContent="center"
       alignContent="center"
       padding="0px"
-      paddingLeft={['20px', '100px']}
-      paddingRight={['20px', '100px']}
+      paddingLeft={{
+        'base': '0px',
+        'sm': '0px',
+        'md': '0px',
+        'lg': '70px',
+        'xl': '100px',
+        '2xl': '100px',
+      }}
+      paddingRight={{
+        'base': '0px',
+        'sm': '0px',
+        'md': '0px',
+        'lg': '70px',
+        'xl': '100px',
+        '2xl': '100px',
+      }}
+      paddingBottom={{
+        'base': '80px',
+        'sm': '80px',
+        'md': '50px',
+        'lg': '50px',
+        'xl': '50px',
+        '2xl': '50px',
+      }}
       display="flex"
+      gap={10}
       margin="0px">
-      <Stack minWidth="100%" alignItems="center">
-        <Stack
-          justifyContent="flex-start"
-          alignItems="baseline"
-          alignContent="center"
-          width="100%"
-          height="100px"
-          display="flex"
-          direction="row"
-          spacing="250px"
-          position="sticky"
-          pr={['10px', '20px']}
-          pt="45px"
-          pb="20px"
-          backgroundColor="#fff"
-          borderBottom="1px solid #d1d1d1">
-          <Button
-            _hover={{
-              color: '#847BFB',
-              textDecoration: 'none',
-              background: '#fff',
-            }}
-            fontSize="16px"
-            background="#fff"
-            padding="0px"
-            fontWeight="bold"
-            borderRadius="0px"
-            as="a"
-            href="/">
-            <Text
-              borderRadius="0px"
-              _hover={{
-                color: '#847BFB',
-                textDecoration: 'none',
-                background: '#fff',
-              }}
-              color="#1E1E1E"
-              border="none"
-              padding="0px"
-              lineHeight="1.50"
-              fontSize="20px"
-              background="#fff"
-              fontWeight="bold">
-              .equipments
-            </Text>
-          </Button>
-        </Stack>
+      <Stack
+        data-test-id="Stack Main Container"
+        minWidth="100%"
+        alignItems="center">
+        <Header />
         <Outlet />
       </Stack>
     </Container>

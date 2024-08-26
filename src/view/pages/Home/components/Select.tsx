@@ -18,6 +18,8 @@ export const SelectComponent = ({
   const selectProps = useChakraSelectProps({
     value: value,
     options: options,
+    onChange: onChange,
+    placeholder: 'Select an equipment',
     isMulti: false,
     isDisabled: isDisabled,
     focusBorderColor: '#1E1E1E',
@@ -30,7 +32,7 @@ export const SelectComponent = ({
       container: (styles) => {
         return {
           ...styles,
-          borderRadius: '20px',
+          borderRadius: 20,
           backgroundColor: '#fff',
           minHeight: 10,
           maxHeight: 'auto',
@@ -65,8 +67,6 @@ export const SelectComponent = ({
           backgroundColor: '#fff',
           color: 'black',
           justifyContent: 'left',
-          marginLeft: '8px',
-          marginRight: '0px',
           fontSize: '14px',
           whiteSpace: 'normal',
         };
@@ -95,7 +95,7 @@ export const SelectComponent = ({
       control: (styles) => {
         return {
           ...styles,
-          borderRadius: '20px',
+          borderRadius: 20,
           backgroundColor: '#fff',
           border: '0px white solid',
           maxWidth: '100%',
@@ -125,9 +125,8 @@ export const SelectComponent = ({
         return {
           ...styles,
           fontSize: '14px',
-          borderLeftRadius: '20px',
+          borderLeftRadius: 20,
           align: 'left',
-          padding: '5px',
           minHeight: 10,
           maxHeight: '90px',
           width: '230px',
@@ -150,7 +149,6 @@ export const SelectComponent = ({
           color: '#1E1E1E',
           fontSize: '14px',
           fontWeight: 'normal',
-          marginLeft: '8px',
         };
       },
       noOptionsMessage: (styles) => {
@@ -161,11 +159,5 @@ export const SelectComponent = ({
       },
     },
   });
-  return (
-    <Select
-      {...selectProps}
-      onChange={onChange}
-      placeholder="Select an equipment"
-    />
-  );
+  return <Select {...selectProps} />;
 };

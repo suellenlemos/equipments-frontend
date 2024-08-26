@@ -1,10 +1,19 @@
-import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
+import {
+  Box,
+  IconButton,
+  Spinner,
+  Stack,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react';
 import { SingleValue } from 'chakra-react-select';
 import { useCallback, useEffect, useState } from 'react';
+import { MdRefresh } from 'react-icons/md';
 import { Equipment } from '../../../app/entities/Equipment';
 import { useEquipments } from '../../../app/hooks/useEquipments';
 import { EquipmentsChart } from './components/EquipmentsChart';
-import { SelectComponent } from './components/Select';
+import { FileUploadModal } from './components/FileUploadModal';
+import { Toolbar } from './components/Toolbar';
 
 export const Home = () => {
   const {
@@ -20,6 +29,8 @@ export const Home = () => {
 
   const [equipment, setEquipment] = useState<Equipment | null>(null);
 
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
   const handleEquipmentChange = useCallback(
     (option: SingleValue<Equipment>) => {
       setEquipment(option);
@@ -27,42 +38,87 @@ export const Home = () => {
     []
   );
 
+  const refreshEquipmentList = useCallback(async () => {
+    await fetchEquipmentList();
+  }, [fetchEquipmentList]);
+
+  const openUploadModal = useCallback(() => {
+    setIsUploadModalOpen(true);
+  }, []);
+
+  const closeUploadModal = useCallback(async () => {
+    setIsUploadModalOpen(false);
+    await fetchEquipmentList();
+  }, [fetchEquipmentList]);
+
+  useEffect(() => {
+    if (equipment) {
+      const updatedEquipment = equipmentList.find(
+        (e) => e.value === equipment.value
+      );
+      if (updatedEquipment) {
+        setEquipment(updatedEquipment);
+      }
+    }
+  }, [equipmentList, equipment]);
+
   return (
     <Stack
+      display="flex"
+      mt={['15px', '20px']}
+      spacing={[10, 16]}
+      direction="column"
       width="100%"
       justifyContent="flex-start"
       alignContent="center"
-      alignItems={['stretch', 'flex-start']}
-      display="flex"
-      mt="10px"
-      gap={1}
-      direction={['column', 'row']}>
-      <Text
-        border="none"
-        padding="0px"
-        lineHeight="1.50"
-        fontSize="35px"
-        color="#1E1E1E"
-        background="#fff"
-        fontWeight="bold">
-        Dashboard
-      </Text>
+      alignItems="center">
+      <FileUploadModal
+        isUploadModalOpen={isUploadModalOpen}
+        closeUploadModal={closeUploadModal}
+      />
+      <Toolbar
+        value={equipment}
+        options={equipmentList}
+        onChange={handleEquipmentChange}
+        isDisabled={isLoadingEquipmentList || hasEquipmentListError}
+        onClick={openUploadModal}
+      />
 
-      <Stack
-        flex="2"
-        justifyContent="flex-start"
-        alignContent="center"
-        alignItems="center"
-        mt="14px"
-        gap={12}>
-        <SelectComponent
-          value={equipment}
-          options={equipmentList}
-          onChange={handleEquipmentChange}
-          isDisabled={isLoadingEquipmentList || hasEquipmentListError}
-        />
-        {!isLoadingEquipmentList && !hasEquipmentListError && equipment && (
-          <Box backgroundColor="#F1F1F1" padding="20px" borderRadius={32}>
+      {equipment && (
+        <Box
+          height={{
+            'base': '360px',
+            'sm': '360px',
+            'md': '400px',
+            'lg': '400px',
+            'xl': '400px',
+            '2xl': '400px',
+          }}
+          width={{
+            'base': '340px',
+            'sm': '340px',
+            'md': '550px',
+            'lg': '550px',
+            'xl': '550px',
+            '2xl': '550px',
+          }}
+          paddingBottom={{
+            'base': '84px',
+            'sm': '84px',
+            'md': '64px',
+            'lg': '64px',
+            'xl': '64px',
+            '2xl': '64px',
+          }}
+          backgroundColor="#F1F1F1"
+          borderRadius={32}>
+          <Stack
+            display="flex"
+            direction="row"
+            padding={3}
+            justifyContent="space-between"
+            alignContent="center"
+            alignItems="center">
             <Text
               borderRadius="0px"
               border="none"
@@ -75,31 +131,45 @@ export const Home = () => {
               fontWeight="bold">
               Equipment's Value Average
             </Text>
-            <EquipmentsChart
-              value={equipment.value}
-              last_24={equipment.last_24}
-              last_48={equipment.last_48}
-              last_week={equipment.last_week}
-              last_month={equipment.last_month}
-            />
-          </Box>
-        )}
-        {isLoadingEquipmentList && (
-          <Stack
-            justifyContent="center"
-            alignContent="center"
-            alignItems="center"
-            marginTop={['90px', '120px']}>
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="gray.500"
-              boxSize={['90px', '130px']}
-            />
+            <Tooltip
+              label="Refresh Data"
+              offset={[0, 2]}
+              hasArrow
+              placement="top">
+              <IconButton
+                _hover={{
+                  backgroundColor: '#F1F1F1',
+                  fontSize: '28px',
+                  color: '#1E1E1E',
+                }}
+                color="#1E1E1E"
+                bg="#F1F1F1"
+                fontSize="24px"
+                icon={<MdRefresh />}
+                onClick={refreshEquipmentList}
+                aria-label="Refresh Data Button"
+              />
+            </Tooltip>
           </Stack>
-        )}
-      </Stack>
+          {isLoadingEquipmentList && !hasEquipmentListError ? (
+            <Stack
+              justifyContent="center"
+              alignContent="center"
+              alignItems="center"
+              marginTop="120px">
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="gray.500"
+                boxSize={['20px', '40px']}
+              />
+            </Stack>
+          ) : (
+            <EquipmentsChart equipment={equipment} />
+          )}
+        </Box>
+      )}
     </Stack>
   );
 };

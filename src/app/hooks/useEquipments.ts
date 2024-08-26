@@ -13,14 +13,11 @@ export const useEquipments = () => {
   const [hasEquipmentListError, setHasEquipmentListError] =
     useState<boolean>(false);
 
-  const [totalCount, setTotalCount] = useState<number>(0);
-
   const fetchEquipmentList = useCallback(async (): Promise<void> => {
     try {
       setIsLoadingEquipmentList(true);
       const result = await equipmentsService.getAll();
       setEquipmentList(result.dropdown_options);
-      setTotalCount(result.total);
       setHasEquipmentListError(false);
     } catch (error) {
       setHasEquipmentListError(true);
@@ -39,8 +36,6 @@ export const useEquipments = () => {
     setEquipmentList,
     hasEquipmentListError,
     setHasEquipmentListError,
-    totalCount,
-    setTotalCount,
     fetchEquipmentList,
   };
 };
