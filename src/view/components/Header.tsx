@@ -1,6 +1,9 @@
 import { Avatar, Button, Hide, Stack, Text } from '@chakra-ui/react';
+import { useAuth } from '../../app/hooks/useAuth';
 
 export const Header = () => {
+  const { user } = useAuth();
+
   return (
     <Stack
       position="sticky"
@@ -101,7 +104,7 @@ export const Header = () => {
         alignItems="center"
         direction="row">
         <Avatar
-          name="Suellen Lemos"
+          name={user?.fullname}
           placeContent="center"
           size="sm"
           color="white"
@@ -114,7 +117,7 @@ export const Header = () => {
             fontSize={['12px', '14px']}
             fontWeight="600"
             background="#fff">
-            Suellen Lemos
+            {user?.fullname}
           </Text>
         </Hide>
       </Stack>
