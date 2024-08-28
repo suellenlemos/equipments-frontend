@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Home } from '../view/pages';
 
 import { AuthLayout } from '../view/layouts/AuthLayout';
 import { MainLayout } from '../view/layouts/MainLayout';
+import { Home } from '../view/pages/Home';
 import { Login } from '../view/pages/Login';
 import { AuthGuard } from './AuthGuard';
 

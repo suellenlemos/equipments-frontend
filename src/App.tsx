@@ -4,6 +4,7 @@ import { deepmerge } from '@mui/utils';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Router } from './Router';
+import { AuthProvider } from './app/contexts/AuthContext';
 
 const muiTheme = createTheme();
 const chakraTheme = extendTheme();
@@ -15,15 +16,17 @@ export const App = () => {
     <>
       <ThemeProvider theme={theme}>
         <ChakraProvider>
-          <ToastContainer
-            position="top-right"
-            autoClose={7000}
-            transition={Slide}
-            closeOnClick
-            pauseOnFocusLoss
-            draggable
-          />
-          <Router />
+          <AuthProvider>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              transition={Slide}
+              closeOnClick
+              pauseOnFocusLoss
+              draggable
+            />
+            <Router />
+          </AuthProvider>
         </ChakraProvider>
       </ThemeProvider>
     </>

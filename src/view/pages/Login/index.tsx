@@ -1,12 +1,32 @@
 import { Button, Heading, Input, Link, Stack, Text } from '@chakra-ui/react';
+import { useLoginController } from './useLoginController';
 
 export const Login = () => {
+  const {
+    email,
+    setEmail,
+    hasEmailError,
+    setHasEmailError,
+    emailErrorMessage,
+    password,
+    setPassword,
+    hasPasswordError,
+    setHasPasswordError,
+    passwordErrorMessage,
+    isSubmitting,
+    checkEmail,
+    checkPassword,
+    disableSubmit,
+    onSubmit,
+  } = useLoginController();
+
   return (
     <Stack
       display="flex"
       direction="column"
       alignItems="center"
-      justifyContent="center">
+      justifyContent="center"
+      spacing={10}>
       <Stack
         display="flex"
         direction="column"
@@ -45,28 +65,66 @@ export const Login = () => {
         </Stack>
       </Stack>
 
-      <form>
-        <Stack display="flex" width="300px" spacing={4}>
-          <Input
-            fontSize="14px"
-            borderColor="#D3D5D8"
-            backgroundColor="white"
-            focusBorderColor="#44197e"
-            type="email"
-            placeholder="Email"
-          />
-          <Input
-            fontSize="14px"
-            borderColor="#D3D5D8"
-            backgroundColor="white"
-            focusBorderColor="#44197e"
-            type="password"
-            placeholder="Password"
-          />
+      <form onSubmit={onSubmit}>
+        <Stack display="flex" width="300px" spacing={5}>
+          <Stack display="flex" width="300px" spacing={3}>
+            <Stack display="flex" direction="column" spacing={1}>
+              <Input
+                fontSize="14px"
+                borderColor="#D3D5D8"
+                backgroundColor="white"
+                focusBorderColor="#44197e"
+                type="email"
+                placeholder="Email"
+                aria-label="Email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value.toLowerCase().trim());
+                  setHasEmailError(false);
+                }}
+                onBlur={(e) => {
+                  setEmail(e.target.value.toLowerCase());
+                  checkEmail();
+                }}
+              />
+              {hasEmailError && (
+                <Text fontSize="12px" color="#C53030" fontWeight="500" pl="4px">
+                  {emailErrorMessage}
+                </Text>
+              )}
+            </Stack>
+            <Stack display="flex" direction="column" spacing={1}>
+              <Input
+                fontSize="14px"
+                borderColor="#D3D5D8"
+                backgroundColor="white"
+                focusBorderColor="#44197e"
+                type="password"
+                placeholder="Password"
+                aria-label="Password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value.trim());
+                  setHasPasswordError(false);
+                }}
+                onBlur={(e) => {
+                  setPassword(e.target.value);
+                  checkPassword();
+                }}
+              />
+              {hasPasswordError && (
+                <Text fontSize="12px" color="#C53030" fontWeight="500" pl="4px">
+                  {passwordErrorMessage}
+                </Text>
+              )}
+            </Stack>
+          </Stack>
           <Button
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={disableSubmit}
             height="45px"
             fontSize="14px"
-            type="submit"
             bg="#847BFB"
             color="white"
             _hover={{
