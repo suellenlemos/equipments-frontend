@@ -1,8 +1,18 @@
-import { Avatar, Button, Hide, Stack, Text } from '@chakra-ui/react';
+import {
+  Avatar,
+  Button,
+  Hide,
+  IconButton,
+  Stack,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react';
+import { IoLogOutOutline } from 'react-icons/io5';
 import { useAuth } from '../../app/hooks/useAuth';
+import { getFirstAndLastName } from '../../app/utils/getFirstAndLastName';
 
 export const Header = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   return (
     <Stack
@@ -26,9 +36,9 @@ export const Header = () => {
         '2xl': '0px',
       }}
       paddingRight={{
-        'base': '10px',
-        'sm': '10px',
-        'md': '10px',
+        'base': '15px',
+        'sm': '15px',
+        'md': '15px',
         'lg': '0px',
         'xl': '0px',
         '2xl': '0px',
@@ -99,7 +109,7 @@ export const Header = () => {
 
       <Stack
         display="flex"
-        spacing={1}
+        spacing={2}
         justifyContent="center"
         alignItems="center"
         direction="row">
@@ -117,9 +127,24 @@ export const Header = () => {
             fontSize={['12px', '14px']}
             fontWeight="600"
             background="#fff">
-            {user?.fullname}
+            {getFirstAndLastName(user?.fullname)}
           </Text>
         </Hide>
+        <Tooltip label="Log out" offset={[0, 2]} hasArrow placement="bottom">
+          <IconButton
+            _hover={{
+              backgroundColor: '#fff',
+              fontSize: '28px',
+              color: '#1E1E1E',
+            }}
+            color="#1E1E1E"
+            bg="#fff"
+            fontSize="24px"
+            icon={<IoLogOutOutline />}
+            onClick={signOut}
+            aria-label="Log out"
+          />
+        </Tooltip>
       </Stack>
     </Stack>
   );
