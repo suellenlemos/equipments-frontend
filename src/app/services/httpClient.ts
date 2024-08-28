@@ -33,12 +33,14 @@ httpClient.interceptors.response.use(
   async (error: AxiosError) => {
     const accessToken = localStorage.getItem(localStorageKeys.ACCESS_TOKEN);
 
+    const user = localStorage.getItem(localStorageKeys.USER_DATA);
+
     const isUnauthorized = error.response && error.response.status === 401;
 
-    const isSessionExpired = !accessToken || isUnauthorized;
+    const isSessionExpired = user && (!accessToken || isUnauthorized);
 
     const itemsToRemove = [
-      localStorageKeys.USER_INFO,
+      localStorageKeys.USER_DATA,
       localStorageKeys.ACCESS_TOKEN,
     ];
 

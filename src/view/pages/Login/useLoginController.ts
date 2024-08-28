@@ -7,18 +7,10 @@ export const useLoginController = () => {
   const { signIn } = useAuth();
 
   const [email, setEmail] = useState<string>('');
-
-  const [hasEmailError, setHasEmailError] = useState(false);
-
-  const emailErrorMessage = 'Please enter a valid email';
-
   const [password, setPassword] = useState<string>('');
-
-  const [hasPasswordError, setHasPasswordError] = useState(false);
-
-  const passwordErrorMessage = 'Please enter your password';
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasEmailError, setHasEmailError] = useState<boolean>(false);
+  const [hasPasswordError, setHasPasswordError] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const checkEmail = () => {
     setHasEmailError(!checkEmailFormat(email));
@@ -26,7 +18,7 @@ export const useLoginController = () => {
   };
 
   const checkPassword = () => {
-    setHasPasswordError(password.trim().length < 3);
+    setHasPasswordError(password.trim().length < 6);
     setPassword(password);
   };
 
@@ -38,11 +30,11 @@ export const useLoginController = () => {
       event.preventDefault();
       setIsSubmitting(true);
       try {
-        const params = {
+        const formData = {
           email: email.trim(),
           password: password.trim(),
         };
-        await signIn(params);
+        await signIn(formData);
         setIsSubmitting(false);
       } catch (error: any) {
         setIsSubmitting(false);
@@ -57,12 +49,10 @@ export const useLoginController = () => {
     setEmail,
     hasEmailError,
     setHasEmailError,
-    emailErrorMessage,
     password,
     setPassword,
     hasPasswordError,
     setHasPasswordError,
-    passwordErrorMessage,
     isSubmitting,
     setIsSubmitting,
     checkEmail,

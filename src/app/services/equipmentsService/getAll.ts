@@ -3,18 +3,12 @@ import { Equipment } from '../../entities/Equipment';
 import { httpClient } from '../httpClient';
 
 export interface EquipmentsResponse {
-  dropdown_options: Equipment[];
+  equipments: Equipment[];
   total: number;
 }
 
-export interface EquipmentsProps {
-  pageIndex: number;
-  pageSize: number;
-}
-
-export const getAll = async () => {
-  let result: AxiosResponse<EquipmentsResponse>;
-
+export const getAll = async (): Promise<EquipmentsResponse> => {
+  let result: AxiosResponse;
   try {
     result = await httpClient.get(`/equipment?column_name=equipmentId`);
   } catch (err: any) {

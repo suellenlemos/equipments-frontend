@@ -1,24 +1,15 @@
-import { AxiosResponse } from 'axios';
 import { createContext, ReactNode, useCallback, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
 import { localStorageKeys } from '../config/localStorageKeys';
 import { User } from '../entities/User';
-import { httpClient } from '../services/httpClient';
 
-export interface SignInParams {
-  email: string;
-  password: string;
-}
-
-export interface SignInResponse {
-  token: string;
-  user: User;
-}
+import { SignInFormData } from '../entities/SignInFormData';
+import { authService } from '../services/authService.ts';
 
 export interface AuthContextValue {
   signedIn: boolean;
   user: User | undefined;
-  signIn: (params: SignInParams) => Promise<SignInResponse>;
+  signIn: (formData: SignInFormData) => Promise<void>;
   signOut: () => void;
 }
 
@@ -30,7 +21,7 @@ export const AuthContext = createContext({} as AuthContextValue);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useLocalStorage<User | undefined>(
-    localStorageKeys.USER_INFO,
+    localStorageKeys.USER_DATA,
     undefined
   );
 
@@ -39,32 +30,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       localStorageKeys.ACCESS_TOKEN
     );
 
-    const storedUserInfo = localStorage.getItem(localStorageKeys.USER_INFO);
+    const storedUserInfo = localStorage.getItem(localStorageKeys.USER_DATA);
 
     return !!storedAccessToken && !!storedUserInfo;
   });
 
-  const signIn = useCallback(async (params: SignInParams) => {
-    let result: AxiosResponse<SignInResponse>;
-    try {
-      result = await httpClient.post('/login', params);
-    } catch (err: any) {
-      const { message } = err.response.data;
-      throw Error(message);
-    }
-
-    const { data } = result;
-
-    setUser(data.user);
-    localStorage.setItem(localStorageKeys.ACCESS_TOKEN, data.token);
+  const signIn = useCallback(async (formData: SignInFormData) => {
+    const result = await authService.logUser(formData);
+    setUser(result.user);
+    localStorage.setItem(localStorageKeys.ACCESS_TOKEN, result.token);
     setSignedIn(true);
-
-    return data;
   }, []);
 
   const signOut = useCallback(() => {
     localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
-    localStorage.removeItem(localStorageKeys.USER_INFO);
+    localStorage.removeItem(localStorageKeys.USER_DATA);
     setSignedIn(false);
   }, []);
 

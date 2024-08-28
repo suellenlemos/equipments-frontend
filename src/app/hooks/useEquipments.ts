@@ -17,7 +17,7 @@ export const useEquipments = () => {
     try {
       setIsLoadingEquipmentList(true);
       const result = await equipmentsService.getAll();
-      setEquipmentList(result.dropdown_options);
+      setEquipmentList(result.equipments);
       setHasEquipmentListError(false);
     } catch (error) {
       setHasEquipmentListError(true);

@@ -7,12 +7,10 @@ export const Login = () => {
     setEmail,
     hasEmailError,
     setHasEmailError,
-    emailErrorMessage,
     password,
     setPassword,
     hasPasswordError,
     setHasPasswordError,
-    passwordErrorMessage,
     isSubmitting,
     checkEmail,
     checkPassword,
@@ -67,9 +65,10 @@ export const Login = () => {
 
       <form onSubmit={onSubmit}>
         <Stack display="flex" width="300px" spacing={5}>
-          <Stack display="flex" width="300px" spacing={3}>
+          <Stack display="flex" width="300px" spacing={2}>
             <Stack display="flex" direction="column" spacing={1}>
               <Input
+                id="email"
                 fontSize="14px"
                 borderColor="#D3D5D8"
                 backgroundColor="white"
@@ -89,12 +88,13 @@ export const Login = () => {
               />
               {hasEmailError && (
                 <Text fontSize="12px" color="#C53030" fontWeight="500" pl="4px">
-                  {emailErrorMessage}
+                  Please enter a valid email
                 </Text>
               )}
             </Stack>
             <Stack display="flex" direction="column" spacing={1}>
               <Input
+                id="password"
                 fontSize="14px"
                 borderColor="#D3D5D8"
                 backgroundColor="white"
@@ -114,7 +114,7 @@ export const Login = () => {
               />
               {hasPasswordError && (
                 <Text fontSize="12px" color="#C53030" fontWeight="500" pl="4px">
-                  {passwordErrorMessage}
+                  Please enter your password
                 </Text>
               )}
             </Stack>
