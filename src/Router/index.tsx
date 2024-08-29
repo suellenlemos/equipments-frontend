@@ -4,6 +4,7 @@ import { AuthLayout } from '../view/layouts/AuthLayout';
 import { MainLayout } from '../view/layouts/MainLayout';
 import { Home } from '../view/pages/Home';
 import { Login } from '../view/pages/Login';
+import { Register } from '../view/pages/Register';
 import { AuthGuard } from './AuthGuard';
 
 export const Router = () => {
@@ -13,6 +14,9 @@ export const Router = () => {
         <Route element={<AuthGuard isPrivate={false} />}>
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
+          </Route>
+          <Route element={<AuthLayout />}>
+            <Route path="/register" element={<Register />} />
           </Route>
         </Route>
 

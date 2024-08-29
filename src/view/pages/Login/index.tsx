@@ -1,4 +1,5 @@
 import { Button, Heading, Input, Link, Stack, Text } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 import { useLoginController } from './useLoginController';
 
 export const Login = () => {
@@ -49,6 +50,8 @@ export const Login = () => {
           </Text>
           <Link
             aria-label="Sign up"
+            as={RouterLink}
+            to="/register"
             color="#1E1E1E"
             fontSize="15px"
             letterSpacing={-0.7}
@@ -64,8 +67,8 @@ export const Login = () => {
       </Stack>
 
       <form onSubmit={onSubmit}>
-        <Stack display="flex" width="300px" spacing={5}>
-          <Stack display="flex" width="300px" spacing={2}>
+        <Stack display="flex" width={['300px', '350px']} spacing={5}>
+          <Stack display="flex" width={['300px', '350px']} spacing={2}>
             <Stack display="flex" direction="column" spacing={1}>
               <Input
                 id="email"
