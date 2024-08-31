@@ -1,0 +1,22 @@
+services:
+  equipments-frontend:
+    container_name: co-equipments-frontend
+    build: . # Generate docker image locally
+    image: equipments-frontend
+    restart: always
+    env_file: .env
+    ports:
+      - "3000:80"
+    healthcheck:
+      test: curl -fsS localhost:80/ping
+    networks:
+      network-equipments-frontend:
+        ipv4_address: 10.1.0.5
+
+networks:
+  network-equipments-frontend:
+    driver: bridge
+    ipam:
+        driver: default
+        config:
+            - subnet: "10.1.0.0/16"
