@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is an web application to show equipment's bar chart built with React, TypeScript and Vite. The application features the following functionalities:
+This project is a web application to show equipment's bar chart built with React, TypeScript and Vite. The application features the following functionalities:
 
 - User registration
 - User login/authentication
